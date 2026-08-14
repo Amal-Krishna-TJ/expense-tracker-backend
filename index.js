@@ -11,6 +11,8 @@ const cron = require("node-cron");
 
 const processRecurringExpenses = require("./services/recurringExpenseScheduler");
 
+
+
 connectDB();
 
 app.use(cors({
@@ -36,6 +38,7 @@ app.use("/api/budgets", require("./routes/budgetRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/recurring-expenses", require("./routes/recurringExpenseRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/contact", require("./routes/contactRoutes"));
 
 cron.schedule(
 
