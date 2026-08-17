@@ -17,8 +17,8 @@ exports.sendContactMail = async (req, res) => {
             service: "gmail",
 
             auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASSWORD
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
             }
 
         });
@@ -28,7 +28,7 @@ exports.sendContactMail = async (req, res) => {
 
             from: `"Expense Tracker Contact" <${process.env.MAIL_USER}>`,
 
-            to: process.env.MAIL_USER,
+            to: process.env.EMAIL_USER,
 
             replyTo: email,
 

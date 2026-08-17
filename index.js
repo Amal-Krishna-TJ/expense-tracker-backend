@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+
 const express = require("express");
 const cors = require("cors");
 
@@ -16,7 +17,7 @@ const processRecurringExpenses = require("./services/recurringExpenseScheduler")
 connectDB();
 
 app.use(cors({
-    origin: 'https://expense-tracker-frontend-fawn-one.vercel.app',
+    origin: ['https://expense-tracker-frontend-fawn-one.vercel.app','http://localhost:4200'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true
 }));
