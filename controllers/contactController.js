@@ -1,4 +1,5 @@
-const nodemailer = require("nodemailer");
+const sendGmail = require("../services/gmailService");
+
 
 exports.sendContactMail = async (req, res) => {
 
@@ -11,24 +12,13 @@ exports.sendContactMail = async (req, res) => {
             message
         } = req.body;
 
-        // Create mail transporter
-        const transporter = nodemailer.createTransport({
 
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false,
+        // ========================================
+        // EMAIL 1
+        // Send contact message to admin
+        // ========================================
 
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-
-        });
-
-        // Send email
-        await transporter.sendMail({
-
-            from: `"Expense Tracker Contact" <${process.env.EMAIL_USER}>`,
+        await sendGmail({
 
             to: process.env.EMAIL_USER,
 
@@ -64,9 +54,13 @@ exports.sendContactMail = async (req, res) => {
 
         });
 
-        await transporter.sendMail({
 
-            from: `"Expense Tracker" <${process.env.EMAIL_USER}>`,
+        // ========================================
+        // EMAIL 2
+        // Send confirmation to user
+        // ========================================
+
+        await sendGmail({
 
             to: email,
 
@@ -84,7 +78,8 @@ exports.sendContactMail = async (req, res) => {
                     </h2>
 
                     <p>
-                        Thank you for contacting <strong>Expense Tracker</strong>.
+                        Thank you for contacting
+                        <strong>Expense Tracker</strong>.
                     </p>
 
                     <p>
@@ -99,7 +94,8 @@ exports.sendContactMail = async (req, res) => {
                     ">
 
                         <p>
-                            <strong>Subject:</strong> ${subject}
+                            <strong>Subject:</strong>
+                            ${subject}
                         </p>
 
                         <p>
@@ -113,12 +109,13 @@ exports.sendContactMail = async (req, res) => {
                     </div>
 
                     <p>
-                        Our team will review your message and get back to you
-                        as soon as possible.
+                        Our team will review your message and
+                        get back to you as soon as possible.
                     </p>
 
                     <p>
-                        Thank you for using <strong>Expense Tracker</strong>.
+                        Thank you for using
+                        <strong>Expense Tracker</strong>.
                     </p>
 
                     <hr>
@@ -127,14 +124,19 @@ exports.sendContactMail = async (req, res) => {
                         font-size: 13px;
                         color: #777;
                     ">
-                        This is an automated response. Please do not reply
-                        to this email.
+                        This is an automated response.
+                        Please do not reply to this email.
                     </p>
 
                 </div>
             `
 
         });
+
+
+        // ========================================
+        // SUCCESS
+        // ========================================
 
         res.status(200).json({
 
@@ -144,11 +146,15 @@ exports.sendContactMail = async (req, res) => {
 
         });
 
+
     }
 
     catch (error) {
 
-        console.error("MAIL ERROR:", error);
+        console.error(
+            "GMAIL API ERROR:",
+            error
+        );
 
         res.status(500).json({
 

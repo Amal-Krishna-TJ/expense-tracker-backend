@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("../utils/sendEmail");
+const sendGmail = require("../services/gmailService");
 
 // Register User
 const register = async (req, res) => {
@@ -347,15 +347,15 @@ const forgotPassword = async (req, res) => {
             </div>
         `;
 
-        await sendEmail(
+        await sendGmail({
 
-            user.email,
-
-            "Expense Tracker - Password Reset OTP",
-
-            html
-
-        );
+            to: user.email,
+                
+            subject: "Expense Tracker - Password Reset OTP",
+                
+            html: html
+                
+        });
 
         return res.status(200).json({
 

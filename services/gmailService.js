@@ -13,7 +13,8 @@ const oauth2Client = new google.auth.OAuth2(
 const sendGmail = async ({
     to,
     subject,
-    html
+    html,
+    replyTo
 }) => {
 
     try {
@@ -33,6 +34,7 @@ const sendGmail = async ({
         const message = [
             `From: Expense Tracker <${process.env.EMAIL_USER}>`,
             `To: ${to}`,
+            ...(replyTo ? [`Reply-To: ${replyTo}`] : []),
             `Subject: ${subject}`,
             "MIME-Version: 1.0",
             "Content-Type: text/html; charset=UTF-8",
