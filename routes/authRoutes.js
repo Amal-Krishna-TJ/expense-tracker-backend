@@ -6,10 +6,9 @@ const authController = require("../controllers/authController");
 
 const {protect} = require("../middleware/authMiddleware");
 
-const {
-    getAuthUrl,
-    getTokens
-} = require("../services/gmailOAuth");
+const {getAuthUrl, getTokens} = require("../services/gmailOAuth");
+
+const sendGmail = require("../services/gmailService");
 
 router.post("/register", authController.register);
 
@@ -83,6 +82,67 @@ router.get(
             res.status(500).send(
                 "Google authorization failed."
             );
+
+        }
+
+    }
+);
+
+router.get(
+    "/test-gmail",
+    async (req, res) => {
+
+        try {
+
+            await sendGmail({
+
+                to: process.env.EMAIL_USER,
+
+                subject:
+                    "Expense Tracker Gmail API Test",
+
+                html: `
+                    <h2>Gmail API Working!</h2>
+
+                    <p>
+                        This email was sent using
+                        Gmail API OAuth 2.0.
+                    </p>
+
+                    <p>
+                        No SMTP was used.
+                    </p>
+                `
+
+            });
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Gmail API email sent successfully."
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "TEST GMAIL ERROR:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Gmail API test failed."
+
+            });
 
         }
 
